@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/kjetil/Documents/face-detection-libface/build",
-  "command": "/usr/bin/g++ -isystem /usr/local/include/opencv4 -g -o CMakeFiles/Program.dir/src/main.cpp.o -c /home/kjetil/Documents/face-detection-libface/src/main.cpp",
-  "file": "/home/kjetil/Documents/face-detection-libface/src/main.cpp"
-}
-]
