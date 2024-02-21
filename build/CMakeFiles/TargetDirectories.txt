@@ -1,0 +1,3 @@
+/home/kjetil/Documents/face-detection-libface/build/CMakeFiles/Program.dir
+/home/kjetil/Documents/face-detection-libface/build/CMakeFiles/edit_cache.dir
+/home/kjetil/Documents/face-detection-libface/build/CMakeFiles/rebuild_cache.dir
