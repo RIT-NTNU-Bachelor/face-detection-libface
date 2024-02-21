@@ -38,7 +38,7 @@ the use of this software, even if advised of the possibility of such damage.
 
 #pragma once
 
-#include " facedetection_export.h"
+#include "facedetection_export.h"
 
 //#define _ENABLE_AVX512 //Please enable it if X64 CPU
 //#define _ENABLE_AVX2 //Please enable it if X64 CPU
