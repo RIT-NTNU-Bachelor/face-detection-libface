@@ -1,6 +1,11 @@
-# Face Detection with 
+# Face Detection with libfacedetection library
 
 This is a experimental repository for testing the library called libfacedetection.
+
+About the library:
+
+> This is an open source library for CNN-based face detection in images. The CNN model has been converted to static variables in C source files. The source code does not depend on any other libraries. What you need is just a C++ compiler. You can compile the source code under Windows, Linux, ARM and any platform with a C++ compiler.
+
 
 The library can be found on Github here: 
 https://github.com/ShiqiYu/libfacedetection 
@@ -39,4 +44,6 @@ This repository implement the example that was given. It has:
 
 
 ## Result 
+
+![Screenshot from 2024-02-22 09-52-00](https://github.com/RIT-NTNU-Bachelor/face-detection-libface/assets/66110094/43c02234-bff7-42b8-b853-f673920f83bf)
 
