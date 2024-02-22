@@ -9,7 +9,8 @@ using namespace cv;
 using namespace std;
 
 int main(int argc, char* argv[])
-{
+{   
+    // Asks the user to input a camara index to set what camera to display
     if(argc != 2)
     {
         printf("Usage: %s <camera index>\n", argv[0]);
@@ -17,6 +18,8 @@ int main(int argc, char* argv[])
     }
 
 	int * pResults = NULL; 
+
+
     //pBuffer is used in the detection functions.
     //If you call functions in multiple threads, please create one buffer for each thread!
     unsigned char * pBuffer = (unsigned char *)malloc(DETECT_BUFFER_SIZE);
@@ -27,12 +30,20 @@ int main(int argc, char* argv[])
     }
 
 
+    // OpenCV video capture class
     VideoCapture cap;
+
+    // OpenCV image class
     Mat im;
     
+    // If the given argument is a number
     if( isdigit(argv[1][0]))
-    {
+    {   
+        // Start capturing with the camera at the given index
         cap.open(argv[1][0]-'0');
+
+
+        // Check if the code could open the camera 
         if(! cap.isOpened())
         {
             cerr << "Cannot open the camera." << endl;
@@ -40,11 +51,16 @@ int main(int argc, char* argv[])
         }
     }
 
+    
     if( cap.isOpened())
-    {
+    {   
+        // Infinate loop of capturing video
         while(true)
         {
+            // Using the stream operator to set the image information
             cap >> im;
+
+            // UNCOMMENT FOR IMAGE INFO
             //cout << "Image size: " << im.rows << "X" << im.cols << endl;
             Mat image = im.clone();
 
@@ -57,16 +73,23 @@ int main(int argc, char* argv[])
             TickMeter cvtm;
             cvtm.start();
 
+            // Uses the CNN to detect a face in the given image 
             pResults = facedetect_cnn(pBuffer, (unsigned char*)(image.ptr(0)), image.cols, image.rows, (int)image.step);
             
             cvtm.stop();    
+            // Information on how long it took to capture a image 
             printf("time = %gms\n", cvtm.getTimeMilli());
             
-            printf("%d faces detected.\n", (pResults ? *pResults : 0));
-            Mat result_image = image.clone();
             //print the detection results
+            printf("%d faces detected.\n", (pResults ? *pResults : 0));
+
+
+            Mat result_image = image.clone();
+            
+            
             for(int i = 0; i < (pResults ? *pResults : 0); i++)
             {
+                // Get cords to face
                 short * p = ((short*)(pResults+1)) + 16*i;
                 int confidence = p[0];
                 int x = p[1];
@@ -79,30 +102,32 @@ int main(int argc, char* argv[])
                 snprintf(sScore, 256, "%d", confidence);
                 cv::putText(result_image, sScore, cv::Point(x, y-3), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 255, 0), 1);       
                 
-                //draw face rectangle
+                // Draw face rectangle
                 rectangle(result_image, Rect(x, y, w, h), Scalar(0, 255, 0), 2);
-                //draw five face landmarks in different colors
+
+                // Draw five face landmarks in different colors
                 cv::circle(result_image, cv::Point(p[5], p[5 + 1]), 1, cv::Scalar(255, 0, 0), 2);
                 cv::circle(result_image, cv::Point(p[5 + 2], p[5 + 3]), 1, cv::Scalar(0, 0, 255), 2);
                 cv::circle(result_image, cv::Point(p[5 + 4], p[5 + 5]), 1, cv::Scalar(0, 255, 0), 2);
                 cv::circle(result_image, cv::Point(p[5 + 6], p[5 + 7]), 1, cv::Scalar(255, 0, 255), 2);
                 cv::circle(result_image, cv::Point(p[5 + 8], p[5 + 9]), 1, cv::Scalar(0, 255, 255), 2);
                 
-                //print the result
+                // Print the result
                 printf("face %d: confidence=%d, [%d, %d, %d, %d] (%d,%d) (%d,%d) (%d,%d) (%d,%d) (%d,%d)\n", 
                         i, confidence, x, y, w, h, 
                         p[5], p[6], p[7], p[8], p[9], p[10], p[11], p[12], p[13],p[14]);
 
             }
+
+            // Show the image with the box and circles 
             imshow("result", result_image);
             
+            // Allow the user to press 'q' to stop 
             if((cv::waitKey(2)& 0xFF) == 'q')
+                print("Exiting the program...");
                 break;
         }
     }
-   
-	
-
 
     //release the buffer
     free(pBuffer);
